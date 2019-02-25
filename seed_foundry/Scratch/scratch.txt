@@ -1,0 +1,42 @@
+General Website Layout:
+
+Seed-Foundry (Project Folder)
+├── seed_foundry/
+│   ├── __init__.py
+|   ├── prod_mgmt.py (handles logic for product functions and Stripe integration)
+│   ├── admin.py (handles the logic necessary for an admin to perform product management)
+│   ├── templates/
+│   │   ├── index.html
+│   │   ├── about.html
+|   |   ├── layout.html (shared layout with links to all top-level pages and a shopping cart button)
+│   │   └── products/
+│   │       ├── index.html (lists products with pictures)
+|   |       └── charge.html (page that confirms purchase and serves errors regarding transactions)
+│   └── static/
+│       └── style.css
+├──.gitignore
+├──LICENSE
+└──README.md
+
+
+General notes about admin-facing application:
+    For adding, deleting and modifying products the user will need to have an interface they can log into from their
+personal computer that will allow them to perform product management tasks. The idea is that the admin will enter their
+credentials on the website (from within their browser) and it will drop them into and admin-specific view of the
+website. This view should display the products that currently exist, with all the stored Order metadata, and give the
+admin options for editing, adding, and deleting product Orders.
+    For now, I believe we can set the admin username and password as environment variables that get called for
+authentication, so that we can hold off on having a database. Using admin.py, we should be able to render a version of
+the products page that only the admin is allowed to see.
+
+Notes about the UI for product management:
+    I've created a UI sketch (also in the scratch folder) that I'll be referencing in the next section, so have that
+open while reading further. It would be unnecessarily tedious to make every variation of this UI, so just follow the
+basic style of the one I've created when editing buttons and different views. Obviously you'll have to make some
+design decisions on your own. The following is a list that will likely be expanded on in the future, but it explains the
+contents of each button as they should be for the "finished" product:
+    -Edit should give the admin options for changing any of the metatdata.
+    -Delete (self-explanatory).
+    -Add Variation should give the admin an option to create an SKU of the parent product (ie. same shirt, different
+    size/color).
+    -Big "+" sign should add a new product to the list of products, and give the admin a form to enter metadata.
