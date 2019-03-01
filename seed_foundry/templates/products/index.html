@@ -1,10 +1,20 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
 </head>
 <body>
-
+{% block content %}
+    <br/><br/><title>Products</title>
+    <b><p1>Products page</p1></b><br/>
+    {% for item in prod_list %}
+        <br/>
+        {{ item.name}}<br/>
+        {{ item.description}}<br/>
+        {% for att in item.attributes %}
+            {{ att }}<br/>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}
 </body>
 </html>

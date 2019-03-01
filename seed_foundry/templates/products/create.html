@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Product</title>
+</head>
+<body>
+{% block content %}
+    <br/><br/><b><p1>Create Product</p1></b><br/>
+    <form action="/products/create" method="post">
+    Product name:<br>
+    <input type="text" name="prod_name" value=""><br>
+    Product description:<br>
+    <input type="text" name="prod_description" value=""><br>
+    Product size:<br>
+    <input type="text" name="prod_size" value=""><br>
+    Product color:<br>
+    <input type="text" name="prod_color" value=""><br>
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
+
+</body>
+</html>
