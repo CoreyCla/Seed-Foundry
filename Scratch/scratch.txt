@@ -5,6 +5,8 @@ Seed-Foundry (Project Folder)
 │   ├── __init__.py
 |   ├── prod_mgmt.py (handles logic for product functions and Stripe integration)
 │   ├── admin.py (handles the logic necessary for an admin to perform product management)
+│   ├── static/
+│   |   └── style.css
 │   ├── templates/
 │   │   ├── index.html
 │   │   ├── about.html
@@ -12,8 +14,7 @@ Seed-Foundry (Project Folder)
 │   │   └── products/
 │   │       ├── index.html (lists products with pictures)
 |   |       └── charge.html (page that confirms purchase and serves errors regarding transactions)
-│   └── static/
-│       └── style.css
+│   └──
 ├──.gitignore
 ├──LICENSE
 └──README.md
@@ -26,10 +27,14 @@ credentials on the website (from within their browser) and it will drop them int
 website. This view should display the products that currently exist, with all the stored Order metadata, and give the
 admin options for editing, adding, and deleting product Orders.
     For now, I believe we can set the admin username and password as environment variables that get called for
-authentication, so that we can hold off on having a database. Using admin.py, we should be able to render a version of
-the products page that only the admin is allowed to see.
+authentication. Using admin.py, we should be able to render a version of the products page that only the admin is
+allowed to see.
+    In addition to being able to modify products, the admin should be able to edit the layout of certain pages. We'll
+get into that part towards the end of the project, but the idea is that the admin should be able to put pre-decorated
+windows, text, titles, and pictures. This won't need to be too fancy, but it should look attractive enough for a small
+business owner to use while they work on finding a web developer to hash out the specific aesthetics.
 
-Notes about the UI for product management:
+Notes about the UI for admin product management:
     I've created a UI sketch (also in the scratch folder) that I'll be referencing in the next section, so have that
 open while reading further. It would be unnecessarily tedious to make every variation of this UI, so just follow the
 basic style of the one I've created when editing buttons and different views. Obviously you'll have to make some
