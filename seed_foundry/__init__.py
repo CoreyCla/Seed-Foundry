@@ -83,4 +83,7 @@ def create_app(test_config=None):
 
         return render_template('charge.html', amount=amount)
 
+    from . import admin
+    app.register_blueprint(admin.bp)
+
     return app
