@@ -24,50 +24,50 @@ stripe.api_key = stripe_keys['secret_key']
 @bp.route('/createproduct', methods=('GET', 'POST'))
 def createproduct():
     if request.method == 'POST':
-        pName = request.form['name']
+        p_name = request.form['name']
         active = request.form['active']
-        pCaption = request.form['caption']
-        pDescription = request.form['description']
-        pImage = [request.form['image']]
-        pAttribute1 = request.form['attribute1']
-        pAttribute2 = request.form['attribute2']
-        pAttribute3 = request.form['attribute3']
-        pAttribute4 = request.form['attribute4']
-        pAttribute5 = request.form['attribute5']
+        p_caption = request.form['caption']
+        p_description = request.form['description']
+        p_image = [request.form['image']]
+        p_attribute1 = request.form['attribute1']
+        p_attribute2 = request.form['attribute2']
+        p_attribute3 = request.form['attribute3']
+        p_attribute4 = request.form['attribute4']
+        p_attribute5 = request.form['attribute5']
 
-        pAttributes = []
-        inputAttributes = [pAttribute1, pAttribute2, pAttribute3, pAttribute4, pAttribute5]
+        p_attributes = []
+        input_attributes = [p_attribute1, p_attribute2, p_attribute3, p_attribute4, p_attribute5]
 
-        for x in inputAttributes:
+        for x in input_attributes:
             if x != "":
-                pAttributes.append(x)
+                p_attributes.append(x)
 
 
 
 
-        pActive = False
+        p_active = False
 
         if active == "true":
-            pActive = True
+            p_active = True
 
         error = ""
 
-        if not pName:
+        if not p_name:
             error = 'Please enter a name'
-        if not pDescription:
+        if not p_description:
             error = 'Please enter a description'
-        if not pCaption:
+        if not p_caption:
             error = 'Please enter a caption'
         if error == "":
             # do something with product later, return to products page
             stripe.Product.create(
-                name=pName,
+                name=p_name,
                 type='good',
-                active=pActive,
-                description=pDescription,
-                caption=pCaption,
-                images=pImage,
-                attributes=pAttributes
+                active=p_active,
+                description=p_description,
+                caption=p_caption,
+                images=p_image,
+                attributes=p_attributes
             )
 
             return redirect(url_for('products'))
