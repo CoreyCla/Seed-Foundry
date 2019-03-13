@@ -14,6 +14,10 @@
         {% for att in item.attributes %}
             {{ att }}<br/>
         {% endfor %}
+    <form action="/item" method="post">
+    <input type="hidden" name='item_id' value={{ item.id }}>
+    <button type="submit" value="submit">View</button>
+    </form>
     {% endfor %}
 {% endblock %}
 </body>
