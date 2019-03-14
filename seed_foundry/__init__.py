@@ -83,13 +83,7 @@ def create_app(test_config=None):
 
         return render_template('charge.html', amount=amount)
 
-    @app.route('/item', methods=['POST'])
-    def item():
-        if request.method == 'POST':
-            item_id = request.form['item_id']
-            product = stripe.Product.retrieve(item_id)
-            return render_template('/products/item.html', product=product)
-        else:
-            return render_template('/products/index.html')
+    from . import admin
+    app.register_blueprint(admin.bp)
 
     return app
