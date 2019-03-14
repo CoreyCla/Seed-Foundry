@@ -22,13 +22,6 @@ p
 
 
 
-.product:hover .product-name
-{
-    font-style: italic;
-}
-
-
-
 .product-row
 {
     margin: 25px;
