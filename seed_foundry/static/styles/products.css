@@ -1,6 +1,35 @@
+/* General Styles */
+.flex-container 
+{
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
+
+.content
+{
+    width: 75%;
+    margin: auto;
+}
+
+
+
 p
 {
     margin: 2px;
+}
+
+
+
+/* Product Styles */
+.product-row
+{
+    margin: 25px;
+    border-bottom: 1px solid grey;
+    border-radius: 2px;
 }
 
 
@@ -11,6 +40,8 @@ p
     padding: 10px;
     display: block;
     border-radius: 2px;
+    flex-grow: 0;
+    max-width: 250px;
 }
 
 
@@ -18,15 +49,6 @@ p
 .product:hover
 {
     background-color: rgba(0, 0, 0, .05);
-}
-
-
-
-.product-row
-{
-    margin: 25px;
-    border-bottom: 1px solid grey;
-    border-radius: 2px;
 }
 
 
@@ -44,8 +66,11 @@ p
 .product-name
 {
     width: 90%;
-    overflow: hidden;
     font-variant: small-caps;
+    /* for cutting off text */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
