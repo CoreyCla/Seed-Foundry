@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+  {% block content %}
+        <br/><br/>{{ product.name}}<br/>
+        {{ product.description}}<br/>
+        {% for att in product.attributes %}
+            {{ att }}<br/>
+        {% endfor %}
+  {% endblock %}
+  </body>
+</html>
