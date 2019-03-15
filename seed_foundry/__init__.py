@@ -53,7 +53,7 @@ def create_app(test_config=None):
             prod_list.append(stripe.Product.retrieve(item))
         return render_template('/products/index.html', prod_list=prod_list)
 
-    @app.route('/products/<id>/product', methods=['GET', 'POST'])
+    @app.route('/products/<id>', methods=['GET', 'POST'])
     def product(id):
         print(id)
         chosen_product = stripe.Product.retrieve(id)

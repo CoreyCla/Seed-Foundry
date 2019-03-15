@@ -21,6 +21,54 @@ stripe_keys = {
 stripe.api_key = stripe_keys['secret_key']
 
 
+@bp.route('/')
+def index():
+    products = stripe.Product.list()
+
+
+    return render_template('admin/index.html', prod_list=products)
+
+
+@bp.route('/createsku/<id>', methods=('GET', 'POST'))
+def createsku(id):
+
+    product = stripe.Product.retrieve(id)
+    if request.method == 'POST':
+        sku_currency = request.form['currency']
+        sku_price = request.form['price']
+        sku_active = request.form['active']
+        sku_inventory_count = request.form['inventory_count']
+        s_attribute1 = request.form['attribute1']
+        s_attribute2 = request.form['attribute2']
+        s_attribute3 = request.form['attribute3']
+        s_attribute4 = request.form['attribute4']
+        s_attribute5 = request.form['attribute5']
+
+        attribute_keys = product['attributes']
+        s_attributes = {}
+
+        attribute_values = [s_attribute1, s_attribute2, s_attribute3, s_attribute4, s_attribute5]
+        i = 0
+        for x in attribute_values:
+            if x != "":
+                s_attributes[attribute_keys[i]] = x
+                i = i + 1
+
+        stripe.SKU.create(
+            product=id,
+            attributes=s_attributes,
+            price=sku_price,
+            active=sku_active,
+            currency=sku_currency,
+            inventory={
+                "type": "finite",
+                "quantity": sku_inventory_count
+            }
+        )
+    return render_template('admin/createsku.html', product=product)
+
+
+
 @bp.route('/createproduct', methods=('GET', 'POST'))
 def createproduct():
     if request.method == 'POST':

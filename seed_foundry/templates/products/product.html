@@ -19,11 +19,9 @@
                       <h3>SKU Currency</h3>
                       {{ s['currency'] }}
                       <h3>Attributes</h3>
-                      {{ p['attributes'][0]}}
-                      {{ p['attributes'][1]}}
-                      {{ p['attributes'][2]}}
-                      {{ p['attributes'][3]}}
-                      {{ p['attributes'][4]}}
+                      {% for a in s['attributes']%}
+                        {{a}} : {{s['attributes'][a]}}
+                      {% endfor %}
                     {% if not loop.last %}
                       <hr>
                     {% endif %}
