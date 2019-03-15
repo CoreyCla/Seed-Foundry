@@ -26,27 +26,17 @@
                     </div>
                     
                     <!-- Products -->
-                    <div>
+                    <div class="flex-container">
                         {% for item in prod_list %}
-                        
-                            {% if (loop.index - 1) % 4 == 0 %}
-                                <div class="flex-container product-row">
-                            {% endif %}
-
                             <!-- product -->
-                            <div class="product">
+                            <a class="product" href="#">
                                 <!-- <img src="{{item.images[0]}}"> -->
                                 <img class="product-img" src="https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.sparkawards.com%2Fwp-content%2Fuploads%2F2011%2F05%2FProduct_Lg_Type.jpg&f=1" alt={{ item.name }}>
                                 <div>
                                     <p class="product-name">{{ item.name }}</p>
                                     <p class="product-price">$99.99</p>
                                 </div>
-                            </div>
-                            
-                            {% if (loop.index - 1) % 4 == 3 or prod_list|length == loop.index %}
-                                </div>
-                            {% endif %}
-
+                            </a>
                         {% endfor %}
                     </div>
                 </div>

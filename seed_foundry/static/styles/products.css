@@ -5,6 +5,7 @@
     align-items: stretch;
     justify-content: center;
     flex-wrap: wrap;
+    flex-direction: row;
 }
 
 
@@ -25,23 +26,22 @@ p
 
 
 /* Product Styles */
-.product-row
+.product
 {
-    margin: 25px;
+    padding: 20px;
+    display: block;
+    flex-grow: 0;
+    max-width: 250px;
     border-bottom: 1px solid grey;
-    border-radius: 2px;
+    color: black;
 }
 
 
 
-.product
+.product:hover
 {
-    margin: 0 0 10px 0;
-    padding: 10px;
-    display: block;
-    border-radius: 2px;
-    flex-grow: 0;
-    max-width: 250px;
+    text-decoration: none;
+    color: black;
 }
 
 
