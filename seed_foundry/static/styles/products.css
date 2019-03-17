@@ -1,37 +1,10 @@
-/* General Styles */
-.flex-container 
-{
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    flex-wrap: wrap;
-    flex-direction: row;
-}
-
-
-
-.content
-{
-    width: 75%;
-    margin: auto;
-}
-
-
-
-p
-{
-    margin: 2px;
-}
-
-
-
-/* Product Styles */
+/* Products Styles */
 .product
 {
-    padding: 20px;
     display: block;
     flex-grow: 0;
-    max-width: 250px;
+	max-width: 250px;
+	padding: 20px;
     border-bottom: 1px solid grey;
     color: black;
 }
