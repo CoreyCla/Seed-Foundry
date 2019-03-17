@@ -44,7 +44,7 @@ def create_app(test_config=None):
     @app.route('/products')
     def products():
         # Creates a list of product ids to use when retrieving product objects
-        prod_ids = prod_mgmt.find_prod_ids(stripe.Product.list())
+        prod_ids = prod_mgmt.find_prod_ids(stripe.Product.list(limit=1000))
         prod_list = []
         # Retrieves product objects by id and adds them to prod_list
         for item in prod_ids:
@@ -83,11 +83,12 @@ def create_app(test_config=None):
 
         return render_template('charge.html', amount=amount)
 
-    @app.route('/item', methods=['POST'])
+    @app.route('/item')
     def item():
-        if request.method == 'POST':
-            item_id = request.form['item_id']
-            product = stripe.Product.retrieve(item_id)
+        item_id = request.args.get('item_id')
+        product = stripe.Product.retrieve(item_id)
+        
+        if product is not None:
             return render_template('/products/item.html', product=product)
         else:
             return render_template('/products/index.html')
