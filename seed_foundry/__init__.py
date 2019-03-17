@@ -4,6 +4,8 @@ import stripe
 import seed_foundry.prod_mgmt
 
 
+
+
 def create_app(test_config=None):
     # Creates variables for securely storing our API keys. Right now these are the test keys, in the future our live
     # keys will replace these
@@ -50,6 +52,15 @@ def create_app(test_config=None):
         for item in prod_ids:
             prod_list.append(stripe.Product.retrieve(item))
         return render_template('/products/index.html', prod_list=prod_list)
+
+    @app.route('/products/<id>', methods=['GET', 'POST'])
+    def product(id):
+        print(id)
+        chosen_product = stripe.Product.retrieve(id)
+        all_skus = stripe.SKU.list()
+        skus_for_product = prod_mgmt.retrieve_skus_for_product(all_skus, chosen_product['id'])
+
+        return render_template('/products/product.html', product=chosen_product, product_skus=skus_for_product)
 
     @app.route('/products/create', methods=['GET', 'POST'])
     def create_product():

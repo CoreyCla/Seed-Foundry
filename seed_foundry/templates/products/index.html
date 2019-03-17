@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-    </head>
+
+  {% block header %}
+  <h1>{% block title %}New Product{% endblock %}</h1>
+  {% endblock %}
     
     
     <body>
@@ -40,6 +40,7 @@
                                 <div>
                                     <p class="product-name">{{ item.name }}</p>
                                     <p class="product-price">$99.99</p>
+                                    <p><a href="{{url_for('product', id=item.id)}}" class="btn btn-primary">View Product</a></p>
                                 </div>
                             </div>
                             
