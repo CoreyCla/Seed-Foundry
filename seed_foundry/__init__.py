@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request
 import stripe
 import seed_foundry.prod_mgmt
+from . import admin
 
 
 def create_app(test_config=None):
@@ -51,6 +52,15 @@ def create_app(test_config=None):
             prod_list.append(stripe.Product.retrieve(item))
         return render_template('/products/index.html', prod_list=prod_list)
 
+    @app.route('/products/<id>', methods=['GET', 'POST'])
+    def product(id):
+        print(id)
+        chosen_product = stripe.Product.retrieve(id)
+        all_skus = stripe.SKU.list()
+        skus_for_product = prod_mgmt.retrieve_skus_for_product(all_skus, chosen_product['id'])
+
+        return render_template('/products/product.html', product=chosen_product, product_skus=skus_for_product)
+
     @app.route('/products/create', methods=['GET', 'POST'])
     def create_product():
         if request.method == 'POST':
@@ -92,5 +102,7 @@ def create_app(test_config=None):
             return render_template('/products/item.html', product=product)
         else:
             return render_template('/products/index.html')
+
+    app.register_blueprint(admin.bp)
 
     return app
