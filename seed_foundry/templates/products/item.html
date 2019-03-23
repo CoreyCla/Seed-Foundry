@@ -26,11 +26,14 @@
 					<div class="product-details" style="flex-grow: 1">
 						<p class="product-name">{{ product.name }}</p>
 						<!-- <p class="product-price">{{ product.price }}</p> -->
-						<p class="product-price">$99.99</p>
+						<p class="product-price">99.99</p>
 						<p class="product-desc">{{ product.description }}</p>
+                    <form action = "/setcookie" method = "POST">
+                        <input type = "hidden" name = "prod_id" value = {{ product.id }} />
+                        <input type = 'submit' value = "Add To Cart" />
+                    </form>
 					</div>
 				</div>
-
 			</div>
 		{% endblock %}
 	</body>

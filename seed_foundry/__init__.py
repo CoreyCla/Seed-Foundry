@@ -1,8 +1,9 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 import stripe
 import seed_foundry.prod_mgmt
 from . import admin
+import re
 
 
 def create_app(test_config=None):
@@ -102,6 +103,42 @@ def create_app(test_config=None):
             return render_template('/products/item.html', product=product)
         else:
             return render_template('/products/index.html')
+
+    @app.route('/setcookie', methods=['POST'])
+    def set_cookie():
+        if request.method == 'POST':
+            prod_id = request.form['prod_id']
+            if request.cookies.get(prod_id):
+                return render_template('/cart.html')
+            else:
+                resp = make_response(render_template('/cart.html'))
+                resp.set_cookie(prod_id, prod_id)
+                return resp
+        else:
+            return render_template('/cart.html')
+
+    @app.route('/cart')
+    def cart():
+        cart_items = []
+        for i in request.cookies:
+            # RegEx that checks to see if each value in the cookies dict starts with either "prod" or "sku" then takes
+            # those values (product ids) and makes an API request to stripe to get the object associated with it. This
+            # will need to be modified later because there is no reason for users to have product objects displayed;
+            # only skus
+            print(i)
+            escape_re = re.escape(i)
+            sku_match = re.search("^sku", escape_re)
+            prod_match = re.match("^prod.*", escape_re)
+            print(prod_match)
+            if re.search("^prod", escape_re):
+                x = stripe.Product.retrieve(i)
+                cart_items.append(x)
+            elif i == sku_match:
+                x = stripe.Product.retrieve(i)
+                cart_items.append(x)
+            else:
+                continue
+        return render_template('/cart.html', cart_items=cart_items)
 
     app.register_blueprint(admin.bp)
 

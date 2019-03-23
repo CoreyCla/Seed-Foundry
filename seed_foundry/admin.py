@@ -25,7 +25,6 @@ stripe.api_key = stripe_keys['secret_key']
 def index():
     products = stripe.Product.list()
 
-
     return render_template('admin/index.html', prod_list=products)
 
 
@@ -66,7 +65,6 @@ def createsku(id):
             }
         )
     return render_template('admin/createsku.html', product=product)
-
 
 
 @bp.route('/createproduct', methods=('GET', 'POST'))

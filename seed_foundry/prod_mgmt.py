@@ -15,5 +15,3 @@ def retrieve_skus_for_product(sku_dict, product_id):
         if s['product'] == product_id:
             product_skus.append(s)
     return product_skus
-
-
