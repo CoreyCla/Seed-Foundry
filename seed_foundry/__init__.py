@@ -43,14 +43,20 @@ def create_app(test_config=None):
     def about():
         return render_template('about.html')
 
+    # @app.route('/products')
+    # def products():
+    #     # Creates a list of product ids to use when retrieving product objects
+    #     prod_ids = prod_mgmt.find_prod_ids(stripe.Product.list(limit=1000))
+    #     prod_list = []
+    #     # Retrieves product objects by id and adds them to prod_list
+    #     for item in prod_ids:
+    #         prod_list.append(stripe.Product.retrieve(item))
+    #     print(prod_list)
+    #     return render_template('/products/index.html', prod_list=prod_list)
+
     @app.route('/products')
     def products():
-        # Creates a list of product ids to use when retrieving product objects
-        prod_ids = prod_mgmt.find_prod_ids(stripe.Product.list(limit=1000))
-        prod_list = []
-        # Retrieves product objects by id and adds them to prod_list
-        for item in prod_ids:
-            prod_list.append(stripe.Product.retrieve(item))
+        prod_list = prod_mgmt.retrieve_prods(stripe.Product.list())
         return render_template('/products/index.html', prod_list=prod_list)
 
     @app.route('/products/<id>', methods=['GET', 'POST'])

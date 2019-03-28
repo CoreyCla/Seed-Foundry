@@ -15,3 +15,14 @@ def retrieve_skus_for_product(sku_dict, product_id):
         if s['product'] == product_id:
             product_skus.append(s)
     return product_skus
+
+
+# This function requires only one API call. Previously the function made a separate API call for each product, and also
+# returned SKUs. For the product page we only need product objects.
+def retrieve_prods(prods):
+    prod_list = []
+    for k, v in prods.items():
+        if k == 'data':
+            prod_list = v
+    return prod_list
+
