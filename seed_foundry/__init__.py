@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, make_response
 import stripe
 import seed_foundry.prod_mgmt
 from . import admin
-import re
 
 
 def create_app(test_config=None):
@@ -43,20 +42,9 @@ def create_app(test_config=None):
     def about():
         return render_template('about.html')
 
-    # @app.route('/products')
-    # def products():
-    #     # Creates a list of product ids to use when retrieving product objects
-    #     prod_ids = prod_mgmt.find_prod_ids(stripe.Product.list(limit=1000))
-    #     prod_list = []
-    #     # Retrieves product objects by id and adds them to prod_list
-    #     for item in prod_ids:
-    #         prod_list.append(stripe.Product.retrieve(item))
-    #     print(prod_list)
-    #     return render_template('/products/index.html', prod_list=prod_list)
-
     @app.route('/products')
     def products():
-        prod_list = prod_mgmt.retrieve_prods(stripe.Product.list())
+        prod_list = prod_mgmt.list_prods(stripe.Product.list())
         return render_template('/products/index.html', prod_list=prod_list)
 
     @app.route('/products/<id>', methods=['GET', 'POST'])
@@ -114,36 +102,26 @@ def create_app(test_config=None):
     def set_cookie():
         if request.method == 'POST':
             prod_id = request.form['prod_id']
+            prod_list = prod_mgmt.dict_prods(stripe.Product.list())
+            print(type(prod_list))
             if request.cookies.get(prod_id):
                 return render_template('/cart.html')
             else:
-                resp = make_response(render_template('/cart.html'))
-                resp.set_cookie(prod_id, prod_id)
+                if prod_mgmt.find_spec_id(prod_id, prod_list):
+                    sku_obj = prod_mgmt.find_spec_prod(prod_id, prod_list)
+                    resp = make_response(render_template('/cart.html'))
+                    resp.set_cookie(prod_id, sku_obj)
+                else:
+                    raise NameError('Bad API call. Product SKU is not available or is incorrect.')
                 return resp
         else:
             return render_template('/cart.html')
 
     @app.route('/cart')
     def cart():
-        cart_items = []
-        for i in request.cookies:
-            # RegEx that checks to see if each value in the cookies dict starts with either "prod" or "sku" then takes
-            # those values (product ids) and makes an API request to stripe to get the object associated with it. This
-            # will need to be modified later because there is no reason for users to have product objects displayed;
-            # only skus
-            print(i)
-            escape_re = re.escape(i)
-            sku_match = re.search("^sku", escape_re)
-            prod_match = re.match("^prod.*", escape_re)
-            print(prod_match)
-            if re.search("^prod", escape_re):
-                x = stripe.Product.retrieve(i)
-                cart_items.append(x)
-            elif i == sku_match:
-                x = stripe.Product.retrieve(i)
-                cart_items.append(x)
-            else:
-                continue
+        cart_items = prod_mgmt.retrieve_cart()
+        # print(cart_items)
+        prod_mgmt.retrieve_cart()
         return render_template('/cart.html', cart_items=cart_items)
 
     app.register_blueprint(admin.bp)
