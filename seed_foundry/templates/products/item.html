@@ -1,15 +1,40 @@
 {% extends "layout.html" %}
 <html>
-  <head>
-    <title></title>
-  </head>
-  <body>
-  {% block content %}
-        <br/><br/>{{ product.name}}<br/>
-        {{ product.description}}<br/>
-        {% for att in product.attributes %}
-            {{ att }}<br/>
-        {% endfor %}
-  {% endblock %}
-  </body>
+	<head>
+		<meta charset="UTF-8">
+	</head>
+
+
+	<body>
+		{% block content %}
+			<!-- supposed to be in head -->
+			<title>{{ product.name }}</title>
+			<link rel="stylesheet" href="../../static/styles/product.css">
+			<!--  -->
+
+			<!-- content -->
+			<div class="flex-container content">
+
+				<div class="product">
+					<!-- image -->
+					<!-- <img src="{{ product.image }}" alt=""> -->
+					<img class="product-img"
+						src="https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.sparkawards.com%2Fwp-content%2Fuploads%2F2011%2F05%2FProduct_Lg_Type.jpg&f=1"
+						alt="{{ product.name }}">
+
+					<!-- desc -->
+					<div class="product-details" style="flex-grow: 1">
+						<p class="product-name">{{ product.name }}</p>
+						<!-- <p class="product-price">{{ product.price }}</p> -->
+						<p class="product-price">99.99</p>
+						<p class="product-desc">{{ product.description }}</p>
+                    <form action = "/setcookie" method = "POST">
+                        <input type = "hidden" name = "prod_id" value = {{ product.id }} />
+                        <input type = 'submit' value = "Add To Cart" />
+                    </form>
+					</div>
+				</div>
+			</div>
+		{% endblock %}
+	</body>
 </html>

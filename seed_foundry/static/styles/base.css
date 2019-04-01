@@ -1,0 +1,24 @@
+/* General Styles */
+.flex-container 
+{
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    flex-wrap: wrap;
+	flex-direction: row;
+}
+
+
+
+.content
+{
+    width: 75%;
+	margin: 25px auto;
+}
+
+
+
+p
+{
+    margin: 2px;
+}

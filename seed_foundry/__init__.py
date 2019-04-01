@@ -1,7 +1,8 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 import stripe
 import seed_foundry.prod_mgmt
+from . import admin
 
 
 def create_app(test_config=None):
@@ -43,13 +44,17 @@ def create_app(test_config=None):
 
     @app.route('/products')
     def products():
-        # Creates a list of product ids to use when retrieving product objects
-        prod_ids = prod_mgmt.find_prod_ids(stripe.Product.list())
-        prod_list = []
-        # Retrieves product objects by id and adds them to prod_list
-        for item in prod_ids:
-            prod_list.append(stripe.Product.retrieve(item))
+        prod_list = prod_mgmt.list_prods(stripe.Product.list())
         return render_template('/products/index.html', prod_list=prod_list)
+
+    @app.route('/products/<id>', methods=['GET', 'POST'])
+    def product(id):
+        print(id)
+        chosen_product = stripe.Product.retrieve(id)
+        all_skus = stripe.SKU.list()
+        skus_for_product = prod_mgmt.retrieve_skus_for_product(all_skus, chosen_product['id'])
+
+        return render_template('/products/product.html', product=chosen_product, product_skus=skus_for_product)
 
     @app.route('/products/create', methods=['GET', 'POST'])
     def create_product():
@@ -83,13 +88,42 @@ def create_app(test_config=None):
 
         return render_template('charge.html', amount=amount)
 
-    @app.route('/item', methods=['POST'])
+    @app.route('/item')
     def item():
-        if request.method == 'POST':
-            item_id = request.form['item_id']
-            product = stripe.Product.retrieve(item_id)
+        item_id = request.args.get('item_id')
+        product = stripe.Product.retrieve(item_id)
+        
+        if product is not None:
             return render_template('/products/item.html', product=product)
         else:
             return render_template('/products/index.html')
+
+    @app.route('/setcookie', methods=['POST'])
+    def set_cookie():
+        if request.method == 'POST':
+            prod_id = request.form['prod_id']
+            prod_list = prod_mgmt.dict_prods(stripe.Product.list())
+            print(type(prod_list))
+            if request.cookies.get(prod_id):
+                return render_template('/cart.html')
+            else:
+                if prod_mgmt.find_spec_id(prod_id, prod_list):
+                    sku_obj = prod_mgmt.find_spec_prod(prod_id, prod_list)
+                    resp = make_response(render_template('/cart.html'))
+                    resp.set_cookie(prod_id, sku_obj)
+                else:
+                    raise NameError('Bad API call. Product SKU is not available or is incorrect.')
+                return resp
+        else:
+            return render_template('/cart.html')
+
+    @app.route('/cart')
+    def cart():
+        cart_items = prod_mgmt.retrieve_cart()
+        # print(cart_items)
+        prod_mgmt.retrieve_cart()
+        return render_template('/cart.html', cart_items=cart_items)
+
+    app.register_blueprint(admin.bp)
 
     return app

@@ -1,0 +1,55 @@
+/* Product Styles */
+.product
+{
+    display: flex;
+    align-items: flex-start;
+    justify-content: left;
+    flex-wrap: wrap;
+	flex-direction: row;
+	
+    padding: 20px;
+    border-bottom: 1px solid grey;
+    color: black;
+}
+
+
+
+.product-details
+{
+    margin: 0 5%;
+}
+
+
+
+.product-img
+{
+    display: block;
+    flex-grow: 1;
+    width: 40%;
+    border-radius: 2px;
+}
+
+
+
+.product-name
+{
+    width: 90%;
+    font-variant: small-caps;
+    font-size: 20pt;
+}
+
+
+
+.product-price
+{
+    width: 90%;
+    font-weight: bold;
+}
+
+
+
+.product-desc
+{
+    margin: 20px;
+    text-align: justify;
+}

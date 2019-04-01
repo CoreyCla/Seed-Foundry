@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+  <h1>{% block title %}New Product Variation{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h3>New SKU for {{product['name'] }}</h3>
+  <form class="form-horizontal" method="post">
+      <div class="form-group">
+          <input type="radio" name="active" value="true" checked>SKU is active<br>
+          <input type="radio" name="active" value="false" >SKU is not active<br>
+      </div>
+      <div class="form-group">
+          <label for="currency">Currency</label>
+          <textarea name="currency" class="form-control" id="currency">{{ request.form['currency'] }}</textarea>
+      </div>
+      <div class="form-group">
+          <label for="price">Price in Smallest Value (cents)</label>
+          <textarea name="price" class="form-control" id="price">{{ request.form['price'] }}</textarea>
+      </div>
+      <div class="form-group">
+          <label for="inventory_count">Inventory Count</label><br>
+          <input name="inventory_count" class="form-control" id="inventory_count" value="{{ request.form['inventory_count'] }}" >
+      </div>
+      <br>
+
+
+      <h3>Optional Attributes</h3>
+      {% for attribute in product['attributes'] %}
+          <div class="form-group">
+              <label for="attribute{{loop.index}}">{{product['attributes'][loop.index-1]}}</label><br>
+              <input name="attribute{{loop.index}}" class="form-control" id="attribute{{loop.index}}" value="{{ request.form['attribute{{i}}'] }}" >
+          </div>
+      {% endfor %}
+
+
+      <input type="submit" value="Save" class="btn btn-primary">
+  </form>
+</div>
+{% endblock %}

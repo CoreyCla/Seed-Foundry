@@ -1,0 +1,55 @@
+/* Products Styles */
+.product
+{
+    display: block;
+    flex-grow: 0;
+	max-width: 250px;
+	padding: 20px;
+    border-bottom: 1px solid grey;
+    color: black;
+}
+
+
+
+.product:hover
+{
+    text-decoration: none;
+    color: black;
+}
+
+
+
+.product:hover
+{
+    background-color: rgba(0, 0, 0, .05);
+}
+
+
+
+.product-img
+{
+    display: block;
+    margin: auto;
+    width: 100%;
+    border-radius: 2px;
+}
+
+
+
+.product-name
+{
+    width: 90%;
+    font-variant: small-caps;
+    /* for cutting off text */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+.product-price
+{
+    width: 90%;
+    font-weight: lighter;
+}
