@@ -47,15 +47,6 @@ def create_app(test_config=None):
         prod_list = prod_mgmt.list_prods(stripe.Product.list())
         return render_template('/products/index.html', prod_list=prod_list)
 
-    @app.route('/products/<id>', methods=['GET', 'POST'])
-    def product(id):
-        print(id)
-        chosen_product = stripe.Product.retrieve(id)
-        all_skus = stripe.SKU.list()
-        skus_for_product = prod_mgmt.retrieve_skus_for_product(all_skus, chosen_product['id'])
-
-        return render_template('/products/product.html', product=chosen_product, product_skus=skus_for_product)
-
     @app.route('/products/create', methods=['GET', 'POST'])
     def create_product():
         if request.method == 'POST':
@@ -91,10 +82,11 @@ def create_app(test_config=None):
     @app.route('/item')
     def item():
         item_id = request.args.get('item_id')
-        product = stripe.Product.retrieve(item_id)
-        
-        if product is not None:
-            return render_template('/products/item.html', product=product)
+        prod = stripe.Product.retrieve(item_id)
+        skus = prod_mgmt.list_prod_skus(item_id, stripe.SKU.list())
+        attr_items = prod_mgmt.list_attr(skus)
+        if prod is not None:
+            return render_template('/products/item.html', product=prod, attr_items=attr_items)
         else:
             return render_template('/products/index.html')
 
@@ -102,8 +94,8 @@ def create_app(test_config=None):
     def set_cookie():
         if request.method == 'POST':
             prod_id = request.form['prod_id']
-            prod_list = prod_mgmt.dict_prods(stripe.Product.list())
-            print(type(prod_list))
+            # Sets variable to a dictionary that contains all SKUs
+            prod_list = prod_mgmt.dict_prods(stripe.SKU.list())
             if request.cookies.get(prod_id):
                 return render_template('/cart.html')
             else:

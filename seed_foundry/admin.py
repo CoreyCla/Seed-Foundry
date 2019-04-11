@@ -88,9 +88,6 @@ def createproduct():
             if x != "":
                 p_attributes.append(x)
 
-
-
-
         p_active = False
 
         if active == "true":
