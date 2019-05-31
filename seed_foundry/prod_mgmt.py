@@ -114,7 +114,7 @@ def sku_by_attr(attr, skus):
 
 
 # Returns all the product item cookies.
-def retrieve_cart():
+def get_cookies():
     cart_items = []
     for i in request.cookies:
         print(i)
