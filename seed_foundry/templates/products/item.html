@@ -1,42 +1,60 @@
 {% extends "layout.html" %}
-<html>
-	<head>
-		<meta charset="UTF-8">
-	</head>
-	<body>
-		{% block content %}
-			<!-- supposed to be in head -->
-			<title>{{ product.name }}</title>
-			<link rel="stylesheet" href="../../static/styles/product.css">
-			<!--  -->
+{% block header %}
+<head>
+	<meta charset="UTF-8">
+	<title>{{ product.name }}</title>
+</head>
+{% endblock %}
 
-			<!-- content -->
-			<div class="flex-container content">
-				<div class="product">
-					<!-- image -->
-					<!-- <img src="{{ product.image }}" alt=""> -->
-					<img class="product-img"
-						src="https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.sparkawards.com%2Fwp-content%2Fuploads%2F2011%2F05%2FProduct_Lg_Type.jpg&f=1"
-						alt="{{ product.name }}">
+{% block content %}
+<body onload="createMenus({{ attr_items|tojson|safe }})">
+	<!-- content -->
+	<link rel="stylesheet" href="../../static/styles/product.css">
+	<script type=text/javascript></script>
 
-					<!-- desc -->
-					<div class="product-details" style="flex-grow: 1">
-						<p class="product-name">{{ product.name }}</p>
-						<!-- <p class="product-price">{{ product.price }}</p> -->
-						<p class="product-desc">{{ product.description }}</p>
-						{% for k, v in attr_items.items() %}
-							<select>
-								<option value="0">Select {{ k }}</option>
-								{% for i in v %}
-									<option name={{ i }} value={{ i }}>{{ i }}</option>
-								{% endfor %}
-						    </select>
-						{% endfor %}
-                        <input type = "hidden" name = "prod_id" value = {{ product.id }} >
-                        <input type = 'submit' value = "Add To Cart" >
-					</div>
-				</div>
+	<div class="flex-container content">
+		<div class="product">
+			<img class="product-img"
+				src="https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.sparkawards.com%2Fwp-content%2Fuploads%2F2011%2F05%2FProduct_Lg_Type.jpg&f=1"
+				alt="{{ product.name }}">
+
+			<div class="product-details" style="flex-grow: 1">
+				<p class="product-name">{{ product.name }}</p>
+				<p class="product-price">{{ product.price }}</p>
+				<p class="product-desc">{{ product.description }}</p>
+				<div id="product-attributes"></div>
+				<input type = "hidden" name = "prod_id" value = {{product.id}} >
+				<input type = 'submit' value = "Add To Cart" >
 			</div>
-		{% endblock %}
-	</body>
-</html>
+		</div>
+	</div>
+	{% endblock %}
+
+	{% block script %}
+	<script type="text/javascript">
+		var menuDiv = document.getElementById("product-attributes");
+		var attrs = {{ attr_items|tojson|safe }};
+
+		for (var attr in attrs) {
+			if (attrs.hasOwnProperty(attr)) {
+				console.log(attr + " -> " + attrs[attr]);
+			};
+
+			var selectList = document.createElement("select");
+			selectList.id = attrs;
+			menuDiv.appendChild(selectList);
+
+			for (var item in attrs[attr]) {
+				var finalAttrs = attrs[attr]
+				var option = document.createElement("option");
+
+				option.value = finalAttrs[item];
+				option.text = finalAttrs[item];
+				selectList.appendChild(option);
+			};
+		};
+	</script>
+	{% endblock %}
+</body>
+
+

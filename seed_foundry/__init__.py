@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, jsonify
 import stripe
 import seed_foundry.prod_mgmt
 from . import admin
@@ -83,12 +83,18 @@ def create_app(test_config=None):
     def item():
         item_id = request.args.get('item_id')
         prod = stripe.Product.retrieve(item_id)
+        # Puts all the SKUs associated with the given product and puts them into a list
         skus = prod_mgmt.list_prod_skus(item_id, stripe.SKU.list())
+        # Takes a list of SKUs and returns a list of  dictionaries with all possible attributes
         attr_items = prod_mgmt.list_attr(skus)
         if prod is not None:
             return render_template('/products/item.html', product=prod, attr_items=attr_items)
         else:
             return render_template('/products/index.html')
+
+    @app.route("/item/update-entry", methods=["POST"])
+    def update_entry():
+        return "Updated!"
 
     @app.route('/setcookie', methods=['POST'])
     def set_cookie():
@@ -111,9 +117,9 @@ def create_app(test_config=None):
 
     @app.route('/cart')
     def cart():
-        cart_items = prod_mgmt.retrieve_cart()
+        cart_items = prod_mgmt.get_cookies()
         # print(cart_items)
-        prod_mgmt.retrieve_cart()
+        prod_mgmt.get_cookies()
         return render_template('/cart.html', cart_items=cart_items)
 
     app.register_blueprint(admin.bp)
